@@ -33,44 +33,18 @@ class It extends AppModel {
 
 	public $useTable = false;
 
-	public $validate = array(
-		'name' => array(
-			'notEmpty' => array(
-				'rule'       => 'notEmpty',
-				'required'   => true,
-				'allowEmpty' => false,
-				'last'       => true,
-				'message'    => 'name を入力してください。',
-			),
-			'ruleMaxLengthJp' => array(
-				'rule'       => 'ruleMaxLengthJp',
-				'required'   => true,
-				'allowEmpty' => false,
-				'last'       => true,
-				'message'    => 'name は %s文字までです。',
-			),
-		),
-		'note' => array(
-			'notEmpty' => array(
-				'rule'       => 'notEmpty',
-				'required'   => true,
-				'allowEmpty' => false,
-				'last'       => true,
-				'message'    => 'note を入力してください。',
-			),
-			'ruleMaxLengthJp' => array(
-				'rule'       => 'ruleMaxLengthJp',
-				'required'   => true,
-				'allowEmpty' => false,
-				'last'       => true,
-				'message'    => 'note は %s文字までです。',
-			),
-		),
+	// 変換情報
+	protected static $convertList = array(
+		'name' => array('trim', 'katakana'),
+		'note' => array('trim', 'line', 'hankaku', 'cutSpace'),
 	);
 
-	// カラムの最大文字数
-	protected static $maxLengthJp = array(
-		'name' =>  30,
-		'note' => 100,
-	);
+	/**
+	 * 半角空白を取り除く
+	 * @param string $word 文字列
+	 * @return string 文字列
+	 */
+	public function cutSpace($word) {
+		return str_replace(" ", "", $word);
+	}
 }

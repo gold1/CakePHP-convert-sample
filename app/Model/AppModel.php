@@ -30,75 +30,40 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
-	// カラムの最大文字数
-	protected static $maxLengthJp = array();
+	// 変換情報
+	protected static $convertList = array();
+	// サニタイズ情報
+	protected static $stripScript = array();
 
 	/**
-	 * バリデートをおこなう
-	 * 親クラスの関数の上書き
-	 * @param array $options オプション
-	 * @return boolean true : 問題なし
+	 * 変換情報を取得する
+	 * @param string $column カラム名
+	 * @return array|false  成功したら配列で返す。失敗したら false を返す。
 	 */
-	public function validates($options = array()) {
-		$this->modifyValidateRure();
-		return parent::validates($options);
-	}
-
-	/**
-	 * バリデートルールを変更する
-	 */
-	public function modifyValidateRure() {
-		foreach ($this->validate as $column => $validates) {
-			foreach ($validates as $number => $settings) {
-				if (is_string($settings['rule'])) {
-					$rule = $settings['rule'];
-				} elseif (is_array($settings['rule'])) {
-					$rule = $settings['rule'][0];
-				}
-				if ($rule == 'ruleMaxLengthJp') {
-					// ルール変更をおこなって文字数を引数に設定する
-					$length = static::getMaxLengthJp($column);
-					$this->validate[$column][$number]['rule'] = array($rule, $length);
-				}
+	public static function getConvertList($column = ''){
+		if ($column != '') {
+			if (array_key_exists($column, static::$convertList)) {
+				return static::$convertList[$column];
+			} else {
+				return false;
 			}
 		}
+		return static::$convertList;
 	}
 
-	/** 
-	 * 日本語の最大文字数があるか判定する
+	/**
+	 * サニタイズ情報を取得する
 	 * @param string $column カラム名
-	 * @return boolean true : 存在する
+	 * @return array|false  成功したら配列で返す。失敗したら false を返す。
 	 */
-	public static function isMaxLengthJp($column) {
-		if (isset(static::$maxLengthJp) &&
-			isset(static::$maxLengthJp[$column])) {
-			return true;
-		} else {
-			return false;
+	public static function getStripScript($column = '') {
+		if ($column != '') {
+			if (array_key_exists($column, static::$stripScript)) {
+				return static::$stripScript[$column];
+			} else {
+				return false;
+			}
 		}
-	}
-
-	/** 
-	 * 日本語の最大文字数を取得する
-	 * @param string $column カラム名
-	 * @return int 文字数
-	 */
-	public static function getMaxLengthJp($column) {
-		if (!isset(static::$maxLengthJp[$column])) {
-			throw new Exception("");
-		}
-		return static::$maxLengthJp[$column];
-	}
-
-	/** 
-	 * 日本語の文字数チェック
-	 * @param array $data 該当するデータ
-	 * @param string $length 長さ
-	 * @return boolean
-	 */
-	public function ruleMaxLengthJp($data, $length) {
-		$encoding = Configure::read('App.encoding');
-		$value = array_shift($data);
-		return (mb_strlen($value, $encoding) <= $length);
+		return static::$stripScript;
 	}
 }

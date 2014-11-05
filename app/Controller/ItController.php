@@ -20,6 +20,8 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('ConverterComponent', 'Controller/Component');
+App::uses('StripScriptComponent', 'Controller/Component');
 
 /**
  * Application Controller
@@ -35,13 +37,15 @@ class ItController extends AppController {
 	public $uses = array(
 		'It'
 	);
+	public $components = array(
+		'Converter',
+		'StripScript',
+	);
 
 	public function form() {
 		if ($this->request->is('post')) {
 			$this->It->set($this->request->data[$this->It->alias]);
-			if ($this->It->validates()) {
-				return $this->render('finish');
-			}
+			return $this->render('finish');
 		}
 	}
 }

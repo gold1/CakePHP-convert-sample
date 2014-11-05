@@ -20,7 +20,6 @@
  */
 
 App::uses('Controller', 'Controller');
-App::uses('Form2Helper', 'View/Helper');
 
 /**
  * Application Controller
@@ -32,9 +31,4 @@ App::uses('Form2Helper', 'View/Helper');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	public $helpers = array(
-		'Form' => array(
-			'className' => 'Form2',
-		),
-	);
 }
