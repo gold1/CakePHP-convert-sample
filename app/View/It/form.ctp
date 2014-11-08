@@ -9,5 +9,9 @@
 	'type' => 'textarea',
 )); ?>
 
+<?= $this->Form->input('note2', array(
+	'type' => 'text',
+)); ?>
+
 <?= $this->Form->submit('送信'); ?>
 

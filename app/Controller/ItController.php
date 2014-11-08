@@ -38,11 +38,23 @@ class ItController extends AppController {
 		'It'
 	);
 	public $components = array(
-		'Converter',
+		'Converter' => array(
+			'It' => array(
+				'note' => array('rtrim', 'line', 'hankaku'),
+			),
+			'note2' => array('cutSpace', 'zenkaku'),
+		),
 		'StripScript',
 	);
 
 	public function form() {
+		if ($this->request->is('get')) {
+			$this->request->data[$this->It->alias] = array(
+				'name'  => '  あｱ  ',
+				'note'  => "あア１Ａ\n<img src=\"\" />\n<script>alert(1);</script>  ",
+				'note2' => 'ｱ - 1 a A',
+			);
+		}
 		if ($this->request->is('post')) {
 			$this->It->set($this->request->data[$this->It->alias]);
 			return $this->render('finish');

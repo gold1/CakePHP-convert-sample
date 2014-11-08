@@ -10,4 +10,7 @@ Name: <?= $this->Form->value('It.name'); ?><br>
 Note: <?= nl2br($this->Form->value('It.note')); ?><br>
 <br>
 <br>
+Note: <?= $this->Form->value('It.note2'); ?><br>
+<br>
+<br>
 

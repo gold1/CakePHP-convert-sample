@@ -35,8 +35,7 @@ class It extends AppModel {
 
 	// 変換情報
 	protected static $convertList = array(
-		'name' => array('trim', 'katakana'),
-		'note' => array('trim', 'line', 'hankaku', 'cutSpace'),
+		'name' => array('trim', 'line', 'katakana'),
 	);
 
 	/**
